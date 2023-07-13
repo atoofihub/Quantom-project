@@ -57,12 +57,13 @@ outputdata = []
 # main section for calculating eigenvalues for density matrix
 for beta in range(1,10,1):
     beta = beta/10 # beta step is 0.1
-
+    
+    xl = pd.ExcelFile("L={}/total_configurations_{}_{}.xlsx".format(L,L,beta))
+    sheet_names = xl.sheet_names
     # reading each sheets (there is 11 sheets in exel files)
     for i in range(11):
         df = pd.read_excel("L={}/total_configurations_{}_{}.xlsx".format(L,L,beta), sheet_name=i) # making data frame of sheets data
         data = (df.to_numpy())[:,1:] # deleting first column(beacause it is header)
-
         phikeys = list(product([-1,1], repeat=3)) # 8(2^3) modes for phi
         phi = {key: [] for key in phikeys} # making phi's dictionaey for 8 modes
 
@@ -108,8 +109,8 @@ for beta in range(1,10,1):
 
         # and finding eigenvalues at the end 
         eigenvalues, eigenvectors = np.linalg.eig(phiMatrix)
-        outputdata.append({'L' : L, 'Beta' : beta, 'Sheet ID' : i, 'N' : j+1, 'Eigen Values' : eigenvalues})
-        print({'L' : L, 'Beta' : beta, 'Sheet ID' : i, 'N' : j+1, 'Eigen Values' : eigenvalues})
+        outputdata.append({'L' : L, 'Beta' : beta, 'Sheet ID' : i,'Sheet Name' : sheet_names[i], 'N' : j+1, ' Eigen Value1' : eigenvalues[0],' Eigen Value2' : eigenvalues[1],' Eigen Value3' : eigenvalues[2],' Eigen Value4' : eigenvalues[3],' Eigen Value5' : eigenvalues[4],' Eigen Value6' : eigenvalues[5],' Eigen Value7' : eigenvalues[6],' Eigen Value8' : eigenvalues[7]})
+        print({'L' : L, 'Beta' : beta, 'Sheet ID' : i,'Sheet Name' : sheet_names[i], 'N' : j+1, 'Eigen Values' : eigenvalues})
             # print(eigenvalues)
 
 output = pd.DataFrame(outputdata)

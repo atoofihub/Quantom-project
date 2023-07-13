@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantom project</title>
+    <link rel="stylesheet" href="./assets/bootstrap-5.2.3/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/jqueryDataTables/datatables.min.css">
+    <link rel="stylesheet" href="./assets/css.css">
+</head>
+
+<body>
+
+    <div class="bg-image"></div>
+
+    <div class="bg-text">
+      <h1>Dr.Majd Quantom Project</h1>
+      <p>arshia jafari & alireza atoofi</p>
+      <input id="csv" type="file" accept=".csv">
+
+      <table id="table" class="display" width="100%"></table>
+
+    </div>
+    
+</body>
+<script src="./assets/jquery/jquery-3.7.0.js"></script>
+<script src="./assets/bootstrap-5.2.3/js/bootstrap.min.js"></script>
+<script src="./assets/jqueryDataTables/datatables.min.js"></script>
+<script>
+    const fileInput = document.getElementById('csv')
+    let lines,array_lines = [],table;
+    const readFile = () => {
+    const reader = new FileReader()
+        reader.onload = () => {
+            var lines = reader.result.split('\n');
+            function getCsvValuesFromLine(line) {
+                var values = line[0].split(',');
+                value = values.map(function(value){
+                    return value.replace(/\"/g, '');
+                });
+                return values;
+            }
+            console.log(lines[1].split(","))
+            lines.shift();
+            lines.pop()
+            let line_tmp;
+            lines.map(function(line) {
+                line_tmp = line.split(",");
+                array_lines.push([ line_tmp[1],line_tmp[2],line_tmp[4],line_tmp[5],line_tmp[6]+","+line_tmp[7]+","+line_tmp[8]+","+line_tmp[9]+","+line_tmp[10]+","+line_tmp[11]+","+line_tmp[12]+","+line_tmp[13] ])
+            });
+            // console.log(array_lines)
+            table =  $('#table').DataTable( {
+                "ordering": false, 
+                "lengthChange": false,
+                columns: [
+                    { title: 'L' },
+                    { title: 'Beta' },
+                    { title: 'Sheet Name' },
+                    { title: 'N' },
+                    { title: ' Eigen Value ' }
+                ],
+                data: array_lines
+            }).columns.adjust().responsive.recalc();
+            
+            // console.log(lines.length);
+            // console.log(lines[0]);
+            // document.getElementById('out').innerHTML = 
+        }
+        // start reading the file. When it is done, calls the onload event defined above.
+        reader.readAsBinaryString(fileInput.files[0])
+    }
+
+
+
+    fileInput.addEventListener('change', readFile)
+</script>
+</html>
