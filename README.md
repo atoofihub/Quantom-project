@@ -41,6 +41,15 @@ And Enjoy it!
 python3 main.py 
 ```
 
+### See final result
+
+* If you want to only see the resault of the code ; First, you must run the original Python file, and finally, after finishing the processing and getting the output, open the show_result file on the desired browser and select the output file with the name eigenvalues_L from the box in the middle of the page and see the result in a table format.
+
+     * 
+```
+show_result.html
+```
+
 ## Authors
 
 * Arshia Jafari
