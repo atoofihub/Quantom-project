@@ -3,17 +3,24 @@ import time
 import pandas as pd
 import numpy as np
 from itertools import product
+import argparse
 
 start_time = time.time()
 
-L = 0
-# while L != 5 | L != 6:
-while True:
-    L = int(input("Hi! Please Enter the L:(L = 5,6) "))
-    if (L == 5):
-        break
-    elif(L == 6):
-        break
+parser = argparse.ArgumentParser()
+parser.add_argument("--l")
+args = parser.parse_args()
+
+L = int(args.l)
+
+# L = 0
+# # while L != 5 | L != 6:
+# while True:
+#     L = int(input("Hi! Please Enter the L:(L = 5,6) "))
+#     if (L == 5):
+#         break
+#     elif(L == 6):
+#         break
 
 
 # define vertex_xyz function that get ""vertex number""" as input and calculate vertex coordinate and return ""x,y,z"" at the end
