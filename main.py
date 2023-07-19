@@ -5,13 +5,21 @@ import numpy as np
 from itertools import product
 import argparse
 
+
 start_time = time.time()
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--l")
+# parser = argparse.ArgumentParser()
+# parser.add_argument("-p")
+# args = parser.parse_args()
+
+parser = argparse.ArgumentParser(description='A test program.')
+
+parser.add_argument("-l", "--print_string", help="Prints the supplied argument.", type=int)
+
 args = parser.parse_args()
 
-L = int(args.l)
+L = args.print_string
+
 
 # L = 0
 # # while L != 5 | L != 6:

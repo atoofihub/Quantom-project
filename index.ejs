@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantom project</title>
+    <link rel="stylesheet" href="/assets/bootstrap-5.2.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/jqueryDataTables/datatables.min.css">
+    <link rel="stylesheet" href="/assets/css.css">
+</head>
+<body>
+    <div class="bg-image"></div>
+
+    <div class="bg-text">
+      <h1>Dr.Majd Quantom Project</h1>
+      <p>arshia jafari & alireza atoofi</p>
+      <form id="runForm">
+        <div class="row">
+            <div class="col-5 d-flex">
+                <select class="form-select" aria-label="Default select LValue" id="LValue" >
+                    <option selected>-- select L from menu --</option>
+                    <option value="5"> l = 5</option>
+                    <option value="6"> l = 6</option>
+                  </select>
+                <input type="submit" value="Run" class="btn btn-secondary" style="margin-left: 1rem;"/>
+
+                <div class="loader d-none" id="loader"></div>
+            </div>
+        </div>
+      </form>
+
+      <table id="table" class="display" width="100%" style="font-size: 12px;"></table>
+
+    </div>
+
+
+
+</body>
+<script src="/assets/jquery/jquery-3.7.0.js"></script>
+<script src="/assets/bootstrap-5.2.3/js/bootstrap.min.js"></script>
+<script src="/assets/jqueryDataTables/datatables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#runForm').submit(function(event) {
+            console.log('chalex');
+            event.preventDefault();
+            let l = $('#LValue').val();
+            console.log(l)
+            $('#loader').removeClass('d-none').addClass('d-block');
+            $.ajax({
+            url: '/run',
+            type: 'POST',
+            data : JSON.stringify({LValue : l}),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(res) {
+               
+                table =  $('#table').DataTable( {
+                    "ordering": false, 
+                    "lengthChange": false,
+                    columns: [
+                        { title: 'L' },
+                        { title: 'Beta' },
+                        { title: 'Sheet Name' },
+                        { title: 'N' },
+                        { title: ' Eigen Value ' }
+                    ],
+                    data: res.data
+                });
+                console.log('Python script executed successfully');
+                $('#loader').removeClass('d-block').addClass('d-none');
+            },
+            error: function() {
+                console.log('Python script execution failed');
+            }
+            });
+        });
+    });
+  </script>
+</html>
