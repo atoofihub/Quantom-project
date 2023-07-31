@@ -2,8 +2,11 @@ const express = require('express');
 const { spawn } = require('child_process');
 const bodyParser = require('body-parser');
 const { dirname } = require('path');
+const multer = require('multer');
 const fs = require('fs');
 const { parse } = require("csv-parse");
+const readline = require('readline');
+const upload = multer({ dest: __dirname+'/uploads/' });
 
 const app = express();
 
@@ -21,6 +24,54 @@ app.set("views", __dirname);
 
 app.get('/static', (req, res) => {
     res.render('show_result.ejs');
+});
+app.get('/static_phi_matrixes', (req, res) => {
+    res.render('static_phi_matrixes.ejs');
+});
+app.post('/static_phi_matrixes_result',upload.single('csvFile'), (req, res) => {
+    if (!req.file) {
+      return res.status(400).send('No file uploaded');
+    }
+
+
+  const rl = readline.createInterface({
+    input: fs.createReadStream(req.file.path),
+    crlfDelay: Infinity
+  });
+
+  let lineNumber = 0;
+  let final_array = {},new_line,betaArray = [],SheetArray = [];
+  rl.on('line', (line) => {
+    lineNumber++;
+
+    if (lineNumber === 1) {
+      // Skip the first line of the file
+      return;
+    }
+    new_line = line.split(",");
+    if (!betaArray.includes(new_line[2])) {
+      betaArray.push(new_line[2]);
+    }
+    if (!SheetArray.includes(new_line[4])) {
+      SheetArray.push(new_line[4]);
+    }
+    
+    if(typeof final_array[new_line[2]] === "undefined"){
+      final_array[new_line[2]] = {};
+    }
+    final_array[new_line[2]][new_line[4]] = new_line.splice(6);
+
+    lineNumber++;
+  });
+
+  rl.on('close', () => {
+    // Delete the uploaded file
+    fs.unlinkSync(req.file.path);
+    
+    // Send a response to the client
+    res.render('static_phi_matrixes_result.ejs',{final_array : final_array,betaArray:betaArray,SheetArray:SheetArray});
+  });
+    
 });
 app.get('/dynamic', (req, res) => {
     res.render('index.ejs');

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantom project</title>
+    <link rel="stylesheet" href="/assets/bootstrap-5.2.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css.css">
+    <style>
+        .matrix {
+        text-align: center;
+        font-family: monospace;
+        font-size: 0.9rem;
+        padding-left: 1px;
+        border-image-slice: 22 22 22 22;
+        border-image-width: 20px 20px 20px 20px;
+        border-image-outset: 0px 0px 0px 0px;
+        border-image-repeat: stretch stretch;
+        border-image-source: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAABKCAYAAAA11z32AAAAAXNSR0IArs4c6QAAAJpJREFUaAXt2jEKg0AARUE3t9wT7jENFtO5IEhSPZsHRtkw/NKx1jqPm2vOOW5uv7q1O+vY/vDquOcvX+d/nj/+uyf7E2yTSIKAtokkCGibSIKAtokkCGibSIKAtokkCGibSIKAtokkCGibSIKAtokkCGibSIKAtokkCGibSIKAtokkCGibSIKAtokkCGibSIKAjt13Vv/82OsLo94UYanCbyYAAAAASUVORK5CYII=");
+    }
+    td{
+        border-width: 1px;
+    }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-image"></div>
+
+    <div class="bg-text">
+      <h1>Dr.Majd Quantom Project</h1>
+      <p>arshia jafari & alireza atoofi</p>
+      <p>BETA TABS</p>
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <% let x=1; for(let row of betaArray){ %>
+          <button class="nav-link <% if(x===1){ %> active <% } %>" id="beta-<%= x %>-tab" data-bs-toggle="tab" data-bs-target="#beta_<%= x %>" type="button" role="tab" aria-controls="nav-home" aria-selected="true"><%= row %></button>
+          <% x++; } %>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <% let y=1,z,sheet,i,j,res; for(let beta of betaArray){ %>
+            <div class="tab-pane fade  <% if(y===1){ %> show active <% } %>" id="beta_<%= y %>" role="tabpanel" aria-labelledby="beta-<%= y %>-tab">
+
+                <div class="accordion" id="accordionBeta_<%= y %>">
+                    <% z=1; for(sheet of SheetArray){ %>
+                        <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingSheet_<%= z %>_<%= y %>">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSheet_<%= z %>_<%= y %>" aria-expanded="true" aria-controls="collapseSheet_<%= z %>_<%= y %>">
+                            <%= sheet %>
+                            </button>
+                        </h2>
+                        <div id="collapseSheet_<%= z %>_<%= y %>" class="accordion-collapse collapse" aria-labelledby="headingSheet_<%= z %>_<%= y %>" data-bs-parent="#accordionBeta_<%= y %>">
+                            <div class="accordion-body d-flex justify-content-center">
+                                <table class="matrix">
+                                    <% for(i=0;i<8;i++){ %>
+                                    <tr>
+                                        <% for(j=0;j<8;j++){ res = i*8 + j; %>
+                                            <td <% if(i*8 + i === res){  %> style="background-color: #ffcfcf;" <% }else if( (i+1)*8 - i-1 === res ){ %> style="background: #bbffb1;" <% } %>><%= final_array['0.1']['horizontal'][res] %></td>
+                                        <% } %>
+                                   </tr>
+                                   <% } %>
+                                 </table>
+                            </div>
+                        </div>
+                        </div>
+                    <% z++; } %>
+                  </div>
+            </div>
+        <% y++; } %>
+      </div>
+
+    </div>
+    
+</body>
+<script src="/assets/jquery/jquery-3.7.0.js"></script>
+<script src="/assets/bootstrap-5.2.3/js/bootstrap.min.js"></script>
+</html>
